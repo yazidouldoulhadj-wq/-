@@ -1,0 +1,6 @@
+{
+  "name": "النادي الخيري رفقاء الخير - حمادي",
+  "description": "التطبيق الرسمي للنادي الخيري رفقاء الخير ببلدية حمادي، ولاية بومرداس. أنشطة مساعدة المرضى والدعم الاجتماعي والقوافل وطرق التواصل والمساهمة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

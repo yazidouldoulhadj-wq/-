@@ -1,0 +1,26 @@
+{
+  "name": "النادي الخيري رفقاء الخير - حمادي",
+  "short_name": "رفقاء الخير",
+  "description": "التطبيق الرسمي للنادي الخيري رفقاء الخير ببلدية حمادي، ولاية بومرداس لمساعدة المرضى والدعم الاجتماعي والقوافل الخيرية.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E4F6EB",
+  "theme_color": "#158A3F",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/images/pwa-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/club-logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

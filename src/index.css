@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --primary-green: #19CC5B;
+    --primary-dark: #158A3F;
+    --bg-mint: #E4F6EB;
+  }
+
+  body {
+    font-family: var(--font-arabic);
+    background-color: #E4F6EB;
+    color: #173822;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #E4F6EB;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #5BE68E;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #19CC5B;
+  }
+}
+
+.tap-active:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
