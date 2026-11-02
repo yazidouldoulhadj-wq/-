@@ -19,7 +19,10 @@ import {
   Building,
   Users,
   HeartHandshake,
-  MessageSquare
+  MessageSquare,
+  ExternalLink,
+  Copy,
+  Check
 } from 'lucide-react';
 import { useClub, PhoneNumberItem } from '../context/ClubContext';
 import { ActivityItem, UrgentAppeal } from '../types';
@@ -387,6 +390,47 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
               {/* Tab 1: General Meta Information */}
               {activeTab === 'meta' && (
                 <form onSubmit={handleSaveMeta} className="space-y-4">
+                  {/* Live Vercel App Link Card */}
+                  <div className="p-4 rounded-2xl bg-[#E4F6EB] border border-[#19CC5B]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                    <div>
+                      <div className="flex items-center gap-1.5 font-bold text-[#0E3E20] mb-0.5">
+                        <span className="w-2 h-2 rounded-full bg-[#19CC5B] animate-pulse"></span>
+                        <span>رابط تطبيقكم المباشر والمنشور للجمهور (Vercel):</span>
+                      </div>
+                      <a
+                        href="https://one-pied-80.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#116F33] hover:underline font-mono text-xs font-bold break-all block"
+                      >
+                        https://one-pied-80.vercel.app/
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('https://one-pied-80.vercel.app/');
+                          setSaveSuccess(true);
+                          setTimeout(() => setSaveSuccess(false), 2500);
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold border border-slate-200 transition flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>نسخ الرابط</span>
+                      </button>
+                      <a
+                        href="https://one-pied-80.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#19CC5B] hover:bg-[#158A3F] text-white font-bold transition flex items-center gap-1.5 cursor-pointer no-underline"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>فتح التطبيق</span>
+                      </a>
+                    </div>
+                  </div>
+
                   <div className="border-b border-slate-200 pb-3">
                     <h3 className="font-extrabold text-base text-slate-900 font-arabic">
                       معلومات النادي والنصوص الأساسية

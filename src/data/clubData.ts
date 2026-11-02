@@ -8,6 +8,7 @@ export const CLUB_META = {
   headerImage: '/images/header-bg.jpg',
   logoImage: '/images/club-logo.jpg',
   pwaIcon: '/images/club-logo-192.png',
+  officialUrl: 'https://one-pied-80.vercel.app/',
   facebookUrl: 'https://www.facebook.com/search/top?q=%D8%A7%D9%84%D9%86%D8%A7%D8%AF%D9%8A%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%20%D8%B1%D9%81%D9%82%D8%A7%D8%A1%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1',
   phoneNumbers: [
     { label: 'اتصل: 0561155377', raw: '0561155377', intl: '+213561155377' },
@@ -15,6 +16,15 @@ export const CLUB_META = {
     { label: 'اتصل: 0541384422', raw: '0541384422', intl: '+213541384422' },
   ],
   receptionHours: 'يومياً ما عدا الجمعة من 09:00 صباحاً إلى 17:00 مساءً',
+};
+
+export const getPublicAppUrl = (): string => {
+  if (typeof window !== 'undefined' && window.location.hostname) {
+    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('run.app')) {
+      return window.location.href;
+    }
+  }
+  return CLUB_META.officialUrl;
 };
 
 export const TRANSLATIONS: Record<Language, {

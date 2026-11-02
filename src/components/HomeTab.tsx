@@ -18,7 +18,7 @@ import {
   Send as TelegramIcon
 } from 'lucide-react';
 import { useClub } from '../context/ClubContext';
-import { TRANSLATIONS } from '../data/clubData';
+import { TRANSLATIONS, getPublicAppUrl } from '../data/clubData';
 import { Language, TabId } from '../types';
 
 interface HomeTabProps {
@@ -288,7 +288,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         {/* Quick Social Buttons: WhatsApp, Telegram, Facebook */}
         <div className="grid grid-cols-3 gap-2 pt-1">
           <a
-            href={`https://api.whatsapp.com/send?text=${encodeURIComponent('تطبيق النادي الخيري رفقاء الخير - بلدية حمادي، ولاية بومرداس لمساعدة المرضى والدعم الاجتماعي:\n' + (typeof window !== 'undefined' ? window.location.href : ''))}`}
+            href={`https://api.whatsapp.com/send?text=${encodeURIComponent('تطبيق النادي الخيري رفقاء الخير - بلدية حمادي، ولاية بومرداس لمساعدة المرضى والدعم الاجتماعي:\n' + getPublicAppUrl())}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#075E54] font-bold text-xs border border-[#25D366]/30 transition active:scale-95 no-underline"
@@ -298,7 +298,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
           </a>
 
           <a
-            href={`https://t.me/share/url?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&text=${encodeURIComponent('تطبيق النادي الخيري رفقاء الخير - حمادي')}`}
+            href={`https://t.me/share/url?url=${encodeURIComponent(getPublicAppUrl())}&text=${encodeURIComponent('تطبيق النادي الخيري رفقاء الخير - حمادي')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 text-[#0088cc] font-bold text-xs border border-[#0088cc]/30 transition active:scale-95 no-underline"
@@ -308,7 +308,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
           </a>
 
           <a
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getPublicAppUrl())}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] font-bold text-xs border border-[#1877F2]/30 transition active:scale-95 no-underline"

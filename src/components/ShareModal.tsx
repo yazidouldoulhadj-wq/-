@@ -15,7 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { CLUB_META } from '../data/clubData';
+import { CLUB_META, getPublicAppUrl } from '../data/clubData';
 import { Language } from '../types';
 
 interface ShareModalProps {
@@ -54,7 +54,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const currentUrl = getPublicAppUrl();
   const shareTitle = 'النادي الخيري رفقاء الخير - حمادي';
   const shareText = `تطبيق النادي الخيري رفقاء الخير - بلدية حمادي، ولاية بومرداس. تصفح أنشطة مساعدة المرضى، كفالة الأيتام، القوافل التضامنية، وطرق التواصل والمساهمة:\n${currentUrl}`;
 
