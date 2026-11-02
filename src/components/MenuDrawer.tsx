@@ -1,4 +1,4 @@
-import { X, Heart, HandHeart, PhoneCall, Calculator, Users, Globe, ExternalLink, Share2, MapPin, Info, Lock } from 'lucide-react';
+import { X, Home, HandHeart, PhoneCall, Calculator, Users, Globe, ExternalLink, Share2, MapPin, Info, Lock } from 'lucide-react';
 import { useClub } from '../context/ClubContext';
 import { TRANSLATIONS } from '../data/clubData';
 import { TabId, Language } from '../types';
@@ -95,7 +95,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
             }`}
           >
             <span>{t.tabHome}</span>
-            <Heart className="w-4 h-4 text-[#19CC5B]" />
+            <Home className="w-4 h-4 text-[#19CC5B]" />
           </button>
 
           <button

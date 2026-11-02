@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, HandHeart, PhoneCall, PlusCircle } from 'lucide-react';
+import { Home, HandHeart, PhoneCall, PlusCircle } from 'lucide-react';
 import { TabId, Language } from '../types';
 import { TRANSLATIONS } from '../data/clubData';
 
@@ -22,7 +22,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     {
       id: 'home',
       label: t.tabHome,
-      icon: <Heart className={`w-5 h-5 transition-transform ${activeTab === 'home' ? 'fill-current scale-110' : ''}`} />,
+      icon: <Home className={`w-5 h-5 transition-transform ${activeTab === 'home' ? 'stroke-[2.5] scale-110' : ''}`} />,
     },
     {
       id: 'activities',

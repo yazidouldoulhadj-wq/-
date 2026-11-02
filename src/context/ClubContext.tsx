@@ -77,7 +77,8 @@ export const ClubProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumberItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PHONES);
-      return saved ? JSON.parse(saved) : INITIAL_META.phoneNumbers;
+      const list = saved ? JSON.parse(saved) : INITIAL_META.phoneNumbers;
+      return list.filter((p: PhoneNumberItem) => p.raw !== '0541384422');
     } catch {
       return INITIAL_META.phoneNumbers;
     }

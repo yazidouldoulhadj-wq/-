@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Heart,
   Users,
   Truck,
   CheckCircle2,
@@ -41,7 +40,7 @@ export const ActivitiesTab: React.FC<ActivitiesTabProps> = ({
       case 'truck':
         return <Truck className="w-8 h-8 text-[#19CC5B]" />;
       default:
-        return <Heart className="w-8 h-8 text-[#19CC5B]" />;
+        return <Sparkles className="w-8 h-8 text-[#19CC5B]" />;
     }
   };
 

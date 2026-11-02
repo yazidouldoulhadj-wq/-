@@ -2,7 +2,6 @@ import React from 'react';
 import {
   HandHeart,
   PhoneCall,
-  Heart,
   ArrowRight,
   ShieldCheck,
   MapPin,
@@ -51,7 +50,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
             <span className="p-1.5 rounded-lg bg-[#E4F6EB] text-[#19CC5B]">
-              <Heart className="w-4 h-4 fill-current" />
+              <Sparkles className="w-4 h-4" />
             </span>
             <span className="text-xs font-bold uppercase tracking-wider text-[#158A3F]">
               مرحباً بكم • أهلاً بكم

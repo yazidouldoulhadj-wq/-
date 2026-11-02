@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, ArrowLeft, Phone, HandHeart, HelpCircle, Heart } from 'lucide-react';
+import { Search, X, ArrowLeft, Phone, HandHeart, HelpCircle } from 'lucide-react';
 import { useClub } from '../context/ClubContext';
 import { FAQ_ITEMS } from '../data/clubData';
 import { TabId } from '../types';
