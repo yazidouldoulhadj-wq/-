@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   Building
 } from 'lucide-react';
-import { CLUB_META, TRANSLATIONS, FAQ_ITEMS } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
+import { TRANSLATIONS, FAQ_ITEMS } from '../data/clubData';
 import { Language } from '../types';
 
 interface ContactTabProps {
@@ -27,6 +28,7 @@ export const ContactTab: React.FC<ContactTabProps> = ({
   onOpenDonate,
   onOpenAid,
 }) => {
+  const { clubMeta, phoneNumbers } = useClub();
   const t = TRANSLATIONS[currentLang];
   const [copiedNumber, setCopiedNumber] = useState<string | null>(null);
   const [messageSent, setMessageSent] = useState(false);
@@ -92,11 +94,11 @@ export const ContactTab: React.FC<ContactTabProps> = ({
             <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-500">
               <div className="flex items-center gap-1.5 font-medium text-slate-700">
                 <MapPin className="w-4 h-4 text-[#19CC5B] shrink-0" />
-                <span>بلدية حمادي، دائرة خميس الخشنة، ولاية بومرداس</span>
+                <span>{clubMeta.addressFull}</span>
               </div>
               <div className="flex items-center gap-1.5 text-slate-500">
                 <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <span>{CLUB_META.receptionHours}</span>
+                <span>{clubMeta.receptionHours}</span>
               </div>
             </div>
           </div>
@@ -117,9 +119,9 @@ export const ContactTab: React.FC<ContactTabProps> = ({
           </p>
         </div>
 
-        {/* The 3 Phone Buttons */}
+        {/* The Phone Buttons */}
         <div className="space-y-3">
-          {CLUB_META.phoneNumbers.map((phone, idx) => (
+          {phoneNumbers.map((phone, idx) => (
             <div
               key={phone.raw}
               className="group relative flex items-center justify-between p-3.5 rounded-2xl bg-[#19CC5B] text-white shadow-md shadow-emerald-600/25 transition-all hover:bg-[#158A3F] active:scale-98"
@@ -194,7 +196,7 @@ export const ContactTab: React.FC<ContactTabProps> = ({
           </div>
 
           <a
-            href={CLUB_META.facebookUrl}
+            href={clubMeta.facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full md:w-auto px-5 py-3 rounded-xl bg-white text-blue-800 font-bold text-xs hover:bg-blue-50 shadow-md transition active:scale-95 flex items-center justify-center gap-2 shrink-0"

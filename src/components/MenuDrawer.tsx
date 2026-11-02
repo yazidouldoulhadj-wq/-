@@ -1,6 +1,6 @@
-import React from 'react';
-import { X, Heart, HandHeart, PhoneCall, Calculator, Users, Globe, ExternalLink, Share2, MapPin, Info } from 'lucide-react';
-import { CLUB_META, TRANSLATIONS } from '../data/clubData';
+import { X, Heart, HandHeart, PhoneCall, Calculator, Users, Globe, ExternalLink, Share2, MapPin, Info, Lock } from 'lucide-react';
+import { useClub } from '../context/ClubContext';
+import { TRANSLATIONS } from '../data/clubData';
 import { TabId, Language } from '../types';
 
 interface MenuDrawerProps {
@@ -15,6 +15,7 @@ interface MenuDrawerProps {
   onOpenVolunteer: () => void;
   onOpenZakat: () => void;
   onOpenShare: () => void;
+  onOpenAdmin: () => void;
 }
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({
@@ -29,7 +30,9 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
   onOpenVolunteer,
   onOpenZakat,
   onOpenShare,
+  onOpenAdmin,
 }) => {
+  const { clubMeta } = useClub();
   const t = TRANSLATIONS[currentLang];
 
   if (!isOpen) return null;
@@ -61,17 +64,17 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
 
           <div className="flex items-center gap-3">
             <img
-              src={CLUB_META.logoImage}
-              alt={CLUB_META.name}
+              src={clubMeta.logoImage}
+              alt={clubMeta.name}
               className="w-12 h-12 rounded-full border-2 border-white object-cover"
             />
             <div>
               <h3 className="font-extrabold text-base leading-tight font-arabic">
-                {CLUB_META.name}
+                {clubMeta.name}
               </h3>
               <p className="text-xs text-emerald-100 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3 text-[#2AE56E]" />
-                <span>بلدية حمادي، بومرداس</span>
+                <span>{clubMeta.location}</span>
               </p>
             </div>
           </div>
@@ -180,7 +183,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
 
           {/* Official Facebook Link */}
           <a
-            href={CLUB_META.facebookUrl}
+            href={clubMeta.facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-between p-3 rounded-xl bg-blue-50/70 text-blue-800 hover:bg-blue-100/70 transition"
@@ -216,6 +219,21 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#19CC5B] text-white">
               مجاناً
             </span>
+          </button>
+
+          {/* Admin Console Entry */}
+          <button
+            onClick={() => {
+              onClose();
+              onOpenAdmin();
+            }}
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900 text-white font-bold transition cursor-pointer mt-1 hover:bg-black"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#19CC5B] animate-pulse"></span>
+              <span className="text-xs">لوحة تحكم الإدارة (Admin)</span>
+            </div>
+            <Lock className="w-4 h-4 text-[#19CC5B]" />
           </button>
 
           {/* Language Switch */}

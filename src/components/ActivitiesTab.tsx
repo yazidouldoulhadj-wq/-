@@ -13,7 +13,7 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
-import { CLUB_ACTIVITIES, CLUB_META } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
 import { Language } from '../types';
 
 interface ActivitiesTabProps {
@@ -29,7 +29,8 @@ export const ActivitiesTab: React.FC<ActivitiesTabProps> = ({
   onOpenAid,
   onOpenVolunteer,
 }) => {
-  const [expandedId, setExpandedId] = useState<string | null>('activity_patients');
+  const { activities, clubMeta } = useClub();
+  const [expandedId, setExpandedId] = useState<string | null>(activities[0]?.id || 'activity_patients');
 
   const getIcon = (name: string) => {
     switch (name) {
@@ -61,7 +62,7 @@ export const ActivitiesTab: React.FC<ActivitiesTabProps> = ({
 
       {/* The 3 Core Activities */}
       <div className="space-y-4">
-        {CLUB_ACTIVITIES.map((activity, index) => {
+        {activities.map((activity, index) => {
           const isExpanded = expandedId === activity.id;
 
           return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, HandHeart, CheckCircle2, Phone, AlertCircle, Send } from 'lucide-react';
-import { CLUB_META } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
 import { AssistanceRequest } from '../types';
 
 interface AssistanceRequestModalProps {
@@ -14,6 +14,7 @@ export const AssistanceRequestModal: React.FC<AssistanceRequestModalProps> = ({
   onClose,
   defaultType,
 }) => {
+  const { phoneNumbers, clubMeta } = useClub();
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [cityOrTown, setCityOrTown] = useState('حمادي');
@@ -240,7 +241,7 @@ export const AssistanceRequestModal: React.FC<AssistanceRequestModalProps> = ({
                   للحالات المستعجلة اتصل مباشرة:
                 </span>
                 <div className="flex flex-wrap justify-center gap-2 text-xs font-bold text-[#158A3F]">
-                  {CLUB_META.phoneNumbers.map((p) => (
+                  {phoneNumbers.map((p) => (
                     <a
                       key={p.raw}
                       href={`tel:${p.intl}`}

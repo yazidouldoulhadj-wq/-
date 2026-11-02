@@ -7,7 +7,7 @@ export const CLUB_META = {
   addressFull: 'مقر النادي الخيري رفقاء الخير، وسط بلدية حمادي، ولاية بومرداس 35008',
   headerImage: '/images/header-bg.jpg',
   logoImage: '/images/club-logo.jpg',
-  pwaIcon: '/images/pwa-icon.png',
+  pwaIcon: '/images/club-logo-192.png',
   facebookUrl: 'https://www.facebook.com/search/top?q=%D8%A7%D9%84%D9%86%D8%A7%D8%AF%D9%8A%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1%D9%8A%20%D8%B1%D9%81%D9%82%D8%A7%D8%A1%20%D8%A7%D9%84%D8%AE%D9%8A%D8%B1',
   phoneNumbers: [
     { label: 'اتصل: 0561155377', raw: '0561155377', intl: '+213561155377' },

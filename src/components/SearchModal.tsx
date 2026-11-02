@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X, ArrowLeft, Phone, HandHeart, HelpCircle, Heart } from 'lucide-react';
-import { CLUB_ACTIVITIES, INITIAL_APPEALS, FAQ_ITEMS, CLUB_META } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
+import { FAQ_ITEMS } from '../data/clubData';
 import { TabId } from '../types';
 
 interface SearchModalProps {
@@ -18,13 +19,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   onOpenDonate,
   onOpenAid,
 }) => {
+  const { activities, appeals, phoneNumbers } = useClub();
   const [query, setQuery] = useState('');
 
   const searchResults = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return null;
 
-    const matchedActivities = CLUB_ACTIVITIES.filter(
+    const matchedActivities = activities.filter(
       (a) =>
         a.title.toLowerCase().includes(q) ||
         a.description.toLowerCase().includes(q) ||
@@ -32,7 +34,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         (a.equipmentOrServices && a.equipmentOrServices.some((e) => e.toLowerCase().includes(q)))
     );
 
-    const matchedAppeals = INITIAL_APPEALS.filter(
+    const matchedAppeals = appeals.filter(
       (app) =>
         app.title.toLowerCase().includes(q) ||
         app.description.toLowerCase().includes(q) ||
@@ -43,7 +45,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
       (f) => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q)
     );
 
-    const phoneMatch = CLUB_META.phoneNumbers.filter((p) => p.raw.includes(q));
+    const phoneMatch = phoneNumbers.filter((p) => p.raw.includes(q) || p.label.toLowerCase().includes(q));
 
     return {
       activities: matchedActivities,

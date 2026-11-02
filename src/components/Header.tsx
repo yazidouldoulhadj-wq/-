@@ -1,6 +1,7 @@
 import React from 'react';
-import { Search, Menu, Globe, MapPin, Heart, Share2 } from 'lucide-react';
-import { CLUB_META, TRANSLATIONS } from '../data/clubData';
+import { Search, Menu, Globe, MapPin, Share2 } from 'lucide-react';
+import { useClub } from '../context/ClubContext';
+import { TRANSLATIONS } from '../data/clubData';
 import { Language } from '../types';
 
 interface HeaderProps {
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenMenu,
   onOpenShare,
 }) => {
+  const { clubMeta } = useClub();
   const t = TRANSLATIONS[currentLang];
 
   return (
@@ -90,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="relative min-h-[220px] md:min-h-[250px] w-full overflow-hidden flex flex-col justify-end p-5 md:p-7">
         {/* Background Image */}
         <img
-          src={CLUB_META.headerImage}
+          src={clubMeta.headerImage}
           alt="رفقاء الخير حمادي"
           className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.45] scale-105"
         />
@@ -100,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Floating decoration */}
         <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-xs font-medium text-emerald-100">
-          <Heart className="w-3.5 h-3.5 text-[#2AE56E] fill-[#2AE56E]" />
+          <span className="w-2 h-2 rounded-full bg-[#2AE56E]"></span>
           <span>عمل تطوعي إنساني</span>
         </div>
 
@@ -110,8 +112,8 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="relative mb-3 group">
             <div className="w-20 h-20 md:w-24 md:h-24 rounded-full p-1 bg-white shadow-xl ring-4 ring-[#19CC5B]/50 transition-transform duration-300 group-hover:scale-105 overflow-hidden">
               <img
-                src={CLUB_META.logoImage}
-                alt={CLUB_META.name}
+                src={clubMeta.logoImage}
+                alt={clubMeta.name}
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -128,12 +130,12 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Titles */}
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white drop-shadow-sm font-arabic">
-            {t.clubTitle}
+            {currentLang === 'ar' ? clubMeta.name : t.clubTitle}
           </h1>
 
           <div className="mt-1 flex items-center justify-center gap-1.5 text-emerald-100 text-sm font-medium">
             <MapPin className="w-3.5 h-3.5 text-[#2AE56E]" />
-            <span>{t.clubSubtitle}</span>
+            <span>{currentLang === 'ar' ? clubMeta.location : t.clubSubtitle}</span>
           </div>
         </div>
       </div>

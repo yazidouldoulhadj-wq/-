@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, HeartHandshake, CheckCircle2, Phone, MapPin, Sparkles, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { CLUB_META } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
 import { DonationSubmission } from '../types';
 
 interface DonationModalProps {
@@ -15,6 +15,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
   onClose,
   initialType,
 }) => {
+  const { phoneNumbers, clubMeta } = useClub();
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [wilaya, setWilaya] = useState('بومرداس - حمادي');
@@ -273,7 +274,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   يمكنكم أيضاً الاتصال المباشر بأرقام النادي:
                 </span>
                 <div className="flex flex-wrap justify-center gap-2 text-xs font-bold text-[#158A3F]">
-                  {CLUB_META.phoneNumbers.map((p) => (
+                  {phoneNumbers.map((p) => (
                     <a
                       key={p.raw}
                       href={`tel:${p.intl}`}

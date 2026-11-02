@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { ClubProvider, useClub } from './context/ClubContext';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
 import { HomeTab } from './components/HomeTab';
@@ -16,11 +17,12 @@ import { ZakatCalculatorModal } from './components/ZakatCalculatorModal';
 import { SearchModal } from './components/SearchModal';
 import { MenuDrawer } from './components/MenuDrawer';
 import { ShareModal } from './components/ShareModal';
+import { AdminConsole } from './components/AdminConsole';
 import { Language, TabId } from './types';
-import { CLUB_META } from './data/clubData';
-import { Smartphone, Monitor } from 'lucide-react';
+import { Smartphone, Monitor, Lock } from 'lucide-react';
 
-export default function App() {
+function AppContent() {
+  const { clubMeta } = useClub();
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [currentLang, setCurrentLang] = useState<Language>('ar');
   const [viewMode, setViewMode] = useState<'mobile' | 'wide'>('mobile');
@@ -35,7 +37,7 @@ export default function App() {
   const [isVolunteerOpen, setIsVolunteerOpen] = useState(false);
   const [isZakatOpen, setIsZakatOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [linkCopied, setLinkCopied] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   // Sync document direction with language
   useEffect(() => {
@@ -74,8 +76,8 @@ export default function App() {
       <aside aria-label="شريط المعاينة" className="hidden lg:flex items-center justify-between w-full max-w-4xl px-4 py-2 mt-2 text-xs text-slate-600 bg-white/80 backdrop-blur-md rounded-2xl shadow-xs border border-emerald-100">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-[#19CC5B] animate-pulse"></span>
-          <span className="font-bold text-[#116F33]">تطبيق رفقاء الخير</span>
-          <span className="text-slate-400">• بلدية حمادي، بومرداس</span>
+          <span className="font-bold text-[#116F33]">{clubMeta.shortName}</span>
+          <span className="text-slate-400">• {clubMeta.location}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -162,9 +164,16 @@ export default function App() {
           onOpenDonate={() => handleOpenDonate()}
         />
 
-        {/* Subtle branding footer */}
-        <div className="pb-20 pt-2 text-center text-[10px] text-slate-400">
-          النادي الخيري رفقاء الخير • بلدية حمادي
+        {/* Subtle branding footer with Admin Console lock icon */}
+        <div className="pb-20 pt-2 text-center text-[10px] text-slate-400 flex items-center justify-center gap-2">
+          <span>{clubMeta.name} • {clubMeta.location}</span>
+          <button
+            onClick={() => setIsAdminOpen(true)}
+            className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition cursor-pointer"
+            title="لوحة تحكم الإدارة (Admin)"
+          >
+            <Lock className="w-3 h-3 text-[#19CC5B]" />
+          </button>
         </div>
       </main>
 
@@ -215,6 +224,7 @@ export default function App() {
         onOpenVolunteer={() => setIsVolunteerOpen(true)}
         onOpenZakat={() => setIsZakatOpen(true)}
         onOpenShare={handleShare}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Comprehensive Share & QR Code Modal */}
@@ -223,6 +233,20 @@ export default function App() {
         onClose={() => setIsShareModalOpen(false)}
         currentLang={currentLang}
       />
+
+      {/* Admin Console Modal */}
+      <AdminConsole
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+      />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ClubProvider>
+      <AppContent />
+    </ClubProvider>
   );
 }

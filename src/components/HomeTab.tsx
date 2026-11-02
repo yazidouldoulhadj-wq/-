@@ -17,7 +17,8 @@ import {
   MessageCircle,
   Send as TelegramIcon
 } from 'lucide-react';
-import { CLUB_META, TRANSLATIONS, INITIAL_APPEALS } from '../data/clubData';
+import { useClub } from '../context/ClubContext';
+import { TRANSLATIONS } from '../data/clubData';
 import { Language, TabId } from '../types';
 
 interface HomeTabProps {
@@ -39,6 +40,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
   onOpenZakat,
   onOpenShare,
 }) => {
+  const { clubMeta, appeals } = useClub();
   const t = TRANSLATIONS[currentLang];
 
   return (
@@ -57,13 +59,13 @@ export const HomeTab: React.FC<HomeTabProps> = ({
           </div>
 
           <p className="text-slate-700 text-sm md:text-base leading-relaxed font-arabic">
-            {t.welcomeIntro}
+            {currentLang === 'ar' ? clubMeta.welcomeIntroAr : clubMeta.welcomeIntroFr}
           </p>
 
           <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span className="flex items-center gap-1.5 font-medium">
               <MapPin className="w-3.5 h-3.5 text-[#19CC5B]" />
-              <span>مقر النادي: بلدية حمادي، بومرداس</span>
+              <span>مقر النادي: {clubMeta.location}</span>
             </span>
             <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 font-bold">
               تطوعي ١٠٠٪
@@ -151,7 +153,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
             </div>
 
             <p className="text-slate-600 text-sm mt-1.5 leading-relaxed">
-              {t.howToContributeDesc}
+              {currentLang === 'ar' ? clubMeta.howToContributeAr : clubMeta.howToContributeFr}
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2.5">
@@ -192,7 +194,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
         </div>
 
         <div className="space-y-3">
-          {INITIAL_APPEALS.map((appeal) => (
+          {appeals.map((appeal) => (
             <div
               key={appeal.id}
               className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50/70 via-slate-50 to-white border border-emerald-100/80 hover:border-emerald-300 transition"
