@@ -18,6 +18,7 @@ import { SearchModal } from './components/SearchModal';
 import { MenuDrawer } from './components/MenuDrawer';
 import { ShareModal } from './components/ShareModal';
 import { AdminConsole } from './components/AdminConsole';
+import { WelcomeVoiceAudio } from './components/WelcomeVoiceAudio';
 import { Language, TabId } from './types';
 import { Smartphone, Monitor, Lock } from 'lucide-react';
 
@@ -239,6 +240,9 @@ function AppContent() {
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
       />
+
+      {/* Invisible Welcome Voice Message Player */}
+      <WelcomeVoiceAudio currentLang={currentLang} />
     </div>
   );
 }

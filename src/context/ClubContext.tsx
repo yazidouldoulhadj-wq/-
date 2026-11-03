@@ -22,6 +22,10 @@ export interface ClubMetaState {
   welcomeIntroFr: string;
   howToContributeAr: string;
   howToContributeFr: string;
+  welcomeAudioEnabled: boolean;
+  welcomeAudioUrlAr: string;
+  welcomeAudioUrlFr: string;
+  welcomeAudioVolume: number;
 }
 
 interface ClubContextType {
@@ -60,6 +64,10 @@ const DEFAULT_META: ClubMetaState = {
   welcomeIntroFr: 'Le club caritatif « Rofaqaa El Kheir » de la commune de Hammadi (Boumerdès) est une association bénévole d\'action humanitaire et sociale. Cette application vous présente les activités du club, comment le contacter et participer à ses actions.',
   howToContributeAr: 'للاستلام والتبرعات، تواصل مع النادي أو توجّه مباشرة إلى مقره في بلدية حمادي.',
   howToContributeFr: 'Pour les dons et dépôts, contactez le club ou rendez-vous directement à son siège situé dans la commune de Hammadi.',
+  welcomeAudioEnabled: true,
+  welcomeAudioUrlAr: '/audio/welcome_ar.mp3',
+  welcomeAudioUrlFr: '/audio/welcome_fr.mp3',
+  welcomeAudioVolume: 0.9,
 };
 
 const ClubContext = createContext<ClubContextType | undefined>(undefined);
@@ -68,7 +76,14 @@ export const ClubProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [clubMeta, setClubMeta] = useState<ClubMetaState>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.META);
-      return saved ? { ...DEFAULT_META, ...JSON.parse(saved) } : DEFAULT_META;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (!parsed.facebookUrl || parsed.facebookUrl.includes('facebook.com/search')) {
+          parsed.facebookUrl = INITIAL_META.facebookUrl;
+        }
+        return { ...DEFAULT_META, ...parsed };
+      }
+      return DEFAULT_META;
     } catch {
       return DEFAULT_META;
     }

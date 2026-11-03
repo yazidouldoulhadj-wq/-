@@ -201,7 +201,7 @@ export const ContactTab: React.FC<ContactTabProps> = ({
             rel="noopener noreferrer"
             className="w-full md:w-auto px-5 py-3 rounded-xl bg-white text-blue-800 font-bold text-xs hover:bg-blue-50 shadow-md transition active:scale-95 flex items-center justify-center gap-2 shrink-0"
           >
-            <span>زيارة صفحة فيسبوك</span>
+            <span>الانضمام لمجموعة فيسبوك</span>
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>

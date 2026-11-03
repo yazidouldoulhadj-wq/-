@@ -190,7 +190,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
           >
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-              <span className="text-xs font-bold">صفحة فيسبوك الرسمية</span>
+              <span className="text-xs font-bold">المجموعة الرسمية على فيسبوك</span>
             </div>
             <ExternalLink className="w-4 h-4 text-blue-600" />
           </a>
