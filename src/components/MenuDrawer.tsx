@@ -268,11 +268,8 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
 
         {/* Footer info */}
         <div className="p-4 bg-slate-50 border-t border-slate-100 text-center">
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-slate-500 font-medium">
             النادي الخيري رفقاء الخير • حمادي، ولاية بومرداس
-          </p>
-          <p className="text-[10px] text-slate-400 mt-0.5">
-            نسخة الويب التفاعلية المخصصة
           </p>
         </div>
       </div>

@@ -20,7 +20,7 @@ import { ShareModal } from './components/ShareModal';
 import { AdminConsole } from './components/AdminConsole';
 import { WelcomeVoiceAudio } from './components/WelcomeVoiceAudio';
 import { Language, TabId } from './types';
-import { Smartphone, Monitor, Lock } from 'lucide-react';
+import { Smartphone, Monitor } from 'lucide-react';
 
 function AppContent() {
   const { clubMeta } = useClub();
@@ -165,17 +165,26 @@ function AppContent() {
           onOpenDonate={() => handleOpenDonate()}
         />
 
-        {/* Subtle branding footer with Admin Console lock icon */}
-        <div className="pb-20 pt-2 text-center text-[10px] text-slate-400 flex items-center justify-center gap-2">
-          <span>{clubMeta.name} • {clubMeta.location}</span>
-          <button
-            onClick={() => setIsAdminOpen(true)}
-            className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition cursor-pointer"
-            title="لوحة تحكم الإدارة (Admin)"
-          >
-            <Lock className="w-3 h-3 text-[#19CC5B]" />
-          </button>
-        </div>
+        {/* Footer */}
+        <footer className="pb-28 pt-4 px-4 text-center border-t border-emerald-100/70 bg-gradient-to-b from-transparent to-white/70">
+          <div className="flex flex-col items-center justify-center gap-2">
+            {/* Club Association Details & Application Logo Button */}
+            <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 mt-0.5">
+              <button
+                onClick={() => setIsAdminOpen(true)}
+                className="p-0.5 rounded-full hover:ring-2 hover:ring-[#19CC5B] transition cursor-pointer overflow-hidden shrink-0 shadow-2xs inline-flex items-center justify-center bg-white border border-emerald-300 active:scale-95"
+                title={currentLang === 'ar' ? 'شعار التطبيق • لوحة تحكم الإدارة' : "Logo de l'application • Administration"}
+              >
+                <img
+                  src={clubMeta.logoImage}
+                  alt={clubMeta.name}
+                  className="w-4 h-4 rounded-full object-cover"
+                />
+              </button>
+              <span>{clubMeta.name} • {clubMeta.location}</span>
+            </div>
+          </div>
+        </footer>
       </main>
 
       {/* Modals */}

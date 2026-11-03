@@ -28,9 +28,12 @@ import {
   Play,
   Square,
   Mic,
+  Upload,
 } from 'lucide-react';
 import { useClub, PhoneNumberItem } from '../context/ClubContext';
 import { ActivityItem, UrgentAppeal } from '../types';
+import { NexusLogo } from './NexusLogo';
+import { NexusLogoModal } from './NexusLogoModal';
 
 interface AdminConsoleProps {
   isOpen: boolean;
@@ -92,6 +95,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
   // Audio preview state
   const previewAudioRef = useRef<HTMLAudioElement | null>(null);
   const [playingPreview, setPlayingPreview] = useState<'ar' | 'fr' | null>(null);
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
 
   // Read stored submissions from localStorage
   const donations = JSON.parse(localStorage.getItem('rofaqaa_donations') || '[]');
@@ -678,6 +682,32 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
                       </div>
                     )}
                   </div>
+                  
+                  {/* NEXUS Logo Customization in Admin */}
+                  <div className="p-4 rounded-2xl bg-[#E4F6EB]/50 border border-emerald-200/80 space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <NexusLogo className="w-8 h-8" size={30} interactive={false} />
+                        <div>
+                          <h4 className="font-extrabold text-xs text-slate-800">
+                            شعار وهوية الشركة المطورة (NEXUS)
+                          </h4>
+                          <p className="text-[11px] text-slate-500">
+                            يمكنك رفع صورتك الخاصة كشعار لـ NEXUS أو اختيار نمط الشعار
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setIsLogoModalOpen(true)}
+                        className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#19CC5B] hover:text-white text-[#158A3F] border border-emerald-300 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs shrink-0"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>تعديل الشعار / Mettre mon logo</span>
+                      </button>
+                    </div>
+                  </div>
 
                   <button
                     type="submit"
@@ -1088,6 +1118,12 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
           </div>
         )}
       </div>
+
+      {/* NEXUS Logo Modal from Admin Console */}
+      <NexusLogoModal
+        isOpen={isLogoModalOpen}
+        onClose={() => setIsLogoModalOpen(false)}
+      />
     </div>
   );
 };
