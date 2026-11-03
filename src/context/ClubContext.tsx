@@ -81,7 +81,11 @@ export const ClubProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!parsed.facebookUrl || parsed.facebookUrl.includes('facebook.com/search')) {
           parsed.facebookUrl = INITIAL_META.facebookUrl;
         }
-        return { ...DEFAULT_META, ...parsed };
+        return {
+          ...DEFAULT_META,
+          ...parsed,
+          welcomeAudioEnabled: parsed.welcomeAudioEnabled !== undefined ? parsed.welcomeAudioEnabled : true,
+        };
       }
       return DEFAULT_META;
     } catch {

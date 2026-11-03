@@ -235,14 +235,14 @@ function AppContent() {
         currentLang={currentLang}
       />
 
+      {/* Invisible Welcome Voice Audio player */}
+      <WelcomeVoiceAudio currentLang={currentLang} />
+
       {/* Admin Console Modal */}
       <AdminConsole
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
       />
-
-      {/* Invisible Welcome Voice Message Player */}
-      <WelcomeVoiceAudio currentLang={currentLang} />
     </div>
   );
 }

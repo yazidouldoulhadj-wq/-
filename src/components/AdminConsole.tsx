@@ -26,7 +26,8 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Square
+  Square,
+  Mic,
 } from 'lucide-react';
 import { useClub, PhoneNumberItem } from '../context/ClubContext';
 import { ActivityItem, UrgentAppeal } from '../types';
@@ -89,42 +90,48 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
   const [passwordMsg, setPasswordMsg] = useState<string | null>(null);
 
   // Audio preview state
-  const [playingAudioLang, setPlayingAudioLang] = useState<'ar' | 'fr' | null>(null);
   const previewAudioRef = useRef<HTMLAudioElement | null>(null);
-
-  const handlePlayPreview = (lang: 'ar' | 'fr') => {
-    if (previewAudioRef.current) {
-      previewAudioRef.current.pause();
-    }
-    const src =
-      lang === 'fr'
-        ? formMeta.welcomeAudioUrlFr || '/audio/welcome_fr.mp3'
-        : formMeta.welcomeAudioUrlAr || '/audio/welcome_ar.mp3';
-    const audio = new Audio(src);
-    audio.volume = formMeta.welcomeAudioVolume ?? 0.9;
-    previewAudioRef.current = audio;
-    setPlayingAudioLang(lang);
-    audio.play().catch((err) => {
-      console.warn('Audio preview error:', err);
-      setPlayingAudioLang(null);
-    });
-    audio.onended = () => setPlayingAudioLang(null);
-    audio.onerror = () => setPlayingAudioLang(null);
-  };
-
-  const handleStopPreview = () => {
-    if (previewAudioRef.current) {
-      previewAudioRef.current.pause();
-      previewAudioRef.current = null;
-    }
-    setPlayingAudioLang(null);
-  };
+  const [playingPreview, setPlayingPreview] = useState<'ar' | 'fr' | null>(null);
 
   // Read stored submissions from localStorage
   const donations = JSON.parse(localStorage.getItem('rofaqaa_donations') || '[]');
   const requests = JSON.parse(localStorage.getItem('rofaqaa_requests') || '[]');
   const volunteers = JSON.parse(localStorage.getItem('rofaqaa_volunteers') || '[]');
   const messages = JSON.parse(localStorage.getItem('rofaqaa_messages') || '[]');
+
+  const handleStopPreview = () => {
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+      previewAudioRef.current = null;
+    }
+    setPlayingPreview(null);
+  };
+
+  const handlePlayPreview = (lang: 'ar' | 'fr') => {
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+    }
+    if (playingPreview === lang) {
+      setPlayingPreview(null);
+      return;
+    }
+    const url =
+      lang === 'fr'
+        ? formMeta.welcomeAudioUrlFr || '/audio/welcome_fr.mp3'
+        : formMeta.welcomeAudioUrlAr || '/audio/welcome_ar.mp3';
+    const audio = new Audio(url);
+    audio.volume = formMeta.welcomeAudioVolume ?? 0.9;
+    previewAudioRef.current = audio;
+    audio.onended = () => setPlayingPreview(null);
+    audio.onerror = () => setPlayingPreview(null);
+    audio.play().catch(() => setPlayingPreview(null));
+    setPlayingPreview(lang);
+  };
+
+  const handleCloseConsole = () => {
+    handleStopPreview();
+    onClose();
+  };
 
   if (!isOpen) return null;
 
@@ -148,6 +155,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
   };
 
   const handleLogout = () => {
+    handleStopPreview();
     setIsAuthenticated(false);
     setPasswordInput('');
   };
@@ -251,10 +259,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
         <div className="px-5 py-4 bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => {
-                handleStopPreview();
-                onClose();
-              }}
+              onClick={handleCloseConsole}
               aria-label="إغلاق"
               className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition cursor-pointer"
             >
@@ -567,94 +572,111 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ isOpen, onClose }) =
                     />
                   </div>
 
-                  {/* Welcome Voice Message Settings */}
-                  <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-3">
+                  {/* Welcome Voice Message Controls */}
+                  <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="p-1.5 rounded-lg bg-[#19CC5B] text-white">
-                          <Volume2 className="w-4 h-4" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-[#19CC5B]/20 text-[#158A3F] flex items-center justify-center shrink-0">
+                          <Mic className="w-4 h-4" />
                         </div>
                         <div>
-                          <h4 className="font-extrabold text-xs text-slate-900 font-arabic">
-                            الرسالة الصوتية الترحيبية (غير مرئية للزوار)
+                          <h4 className="font-bold text-slate-800 text-xs sm:text-sm">
+                            الرسالة الصوتية الترحيبية (غير مرئية للزائر)
                           </h4>
                           <p className="text-[11px] text-slate-500">
-                            رسالة ترحيب صوتية تشتغل تلقائياً في الخلفية عند دخول التطبيق دون أي ظهور مرئي
+                            صوت ترحيبي دافئ يعمل تلقائياً وبشكل غير مرئي في الخلفية عند دخول الزائر للتطبيق
                           </p>
                         </div>
                       </div>
-
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer shrink-0">
                         <input
                           type="checkbox"
-                          checked={formMeta.welcomeAudioEnabled ?? true}
+                          checked={formMeta.welcomeAudioEnabled}
                           onChange={(e) => setFormMeta({ ...formMeta, welcomeAudioEnabled: e.target.checked })}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#19CC5B]"></div>
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#19CC5B]"></div>
                       </label>
                     </div>
 
-                    {/* Preview Player & Controls */}
-                    <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-emerald-100">
-                      <span className="text-[11px] font-bold text-slate-600">تجربة الاستماع:</span>
-                      
-                      <button
-                        type="button"
-                        onClick={() => playingAudioLang === 'ar' ? handleStopPreview() : handlePlayPreview('ar')}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                          playingAudioLang === 'ar'
-                            ? 'bg-red-500 text-white animate-pulse'
-                            : 'bg-white text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
-                        }`}
-                      >
-                        {playingAudioLang === 'ar' ? <Square className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-                        <span>{playingAudioLang === 'ar' ? 'إيقاف (بالعربية)' : 'تشغيل (بالعربية)'}</span>
-                      </button>
+                    {formMeta.welcomeAudioEnabled && (
+                      <div className="pt-2 border-t border-emerald-200/60 space-y-3">
+                        {/* Volume slider */}
+                        <div className="flex items-center justify-between gap-4 text-xs">
+                          <div className="flex items-center gap-1.5 text-slate-700 font-bold shrink-0">
+                            <Volume2 className="w-4 h-4 text-[#158A3F]" />
+                            <span>مستوى الصوت:</span>
+                          </div>
+                          <div className="flex-1 flex items-center gap-3">
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.05"
+                              value={formMeta.welcomeAudioVolume ?? 0.9}
+                              onChange={(e) => setFormMeta({ ...formMeta, welcomeAudioVolume: parseFloat(e.target.value) })}
+                              className="w-full accent-[#19CC5B] cursor-pointer"
+                            />
+                            <span className="font-mono text-xs font-bold text-slate-600 w-10 text-left">
+                              {Math.round((formMeta.welcomeAudioVolume ?? 0.9) * 100)}%
+                            </span>
+                          </div>
+                        </div>
 
-                      <button
-                        type="button"
-                        onClick={() => playingAudioLang === 'fr' ? handleStopPreview() : handlePlayPreview('fr')}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                          playingAudioLang === 'fr'
-                            ? 'bg-red-500 text-white animate-pulse'
-                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-                        }`}
-                      >
-                        {playingAudioLang === 'fr' ? <Square className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-                        <span>{playingAudioLang === 'fr' ? 'Arrêter (Français)' : 'Écouter (Français)'}</span>
-                      </button>
-                    </div>
+                        {/* Preview buttons */}
+                        <div className="flex flex-wrap items-center gap-2 pt-1">
+                          <span className="text-xs font-bold text-slate-600">معاينة الصوت:</span>
+                          <button
+                            type="button"
+                            onClick={() => handlePlayPreview('ar')}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                              playingPreview === 'ar'
+                                ? 'bg-amber-500 text-white shadow-sm'
+                                : 'bg-white hover:bg-emerald-100 text-slate-700 border border-slate-200'
+                            }`}
+                          >
+                            {playingPreview === 'ar' ? (
+                              <Square className="w-3.5 h-3.5 fill-current" />
+                            ) : (
+                              <Play className="w-3.5 h-3.5 fill-current" />
+                            )}
+                            <span>{playingPreview === 'ar' ? 'إيقاف الترحيب العربي' : 'استماع للترحيب العربي'}</span>
+                          </button>
 
-                    {/* Audio Custom Paths & Volume */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                          مسار الملف الصوتي العربي
-                        </label>
-                        <input
-                          type="text"
-                          value={formMeta.welcomeAudioUrlAr || '/audio/welcome_ar.mp3'}
-                          onChange={(e) => setFormMeta({ ...formMeta, welcomeAudioUrlAr: e.target.value })}
-                          className="w-full px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs text-left font-mono"
-                          placeholder="/audio/welcome_ar.mp3"
-                        />
+                          <button
+                            type="button"
+                            onClick={() => handlePlayPreview('fr')}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                              playingPreview === 'fr'
+                                ? 'bg-amber-500 text-white shadow-sm'
+                                : 'bg-white hover:bg-emerald-100 text-slate-700 border border-slate-200'
+                            }`}
+                          >
+                            {playingPreview === 'fr' ? (
+                              <Square className="w-3.5 h-3.5 fill-current" />
+                            ) : (
+                              <Play className="w-3.5 h-3.5 fill-current" />
+                            )}
+                            <span>{playingPreview === 'fr' ? 'Arrêter français' : 'Écouter en français'}</span>
+                          </button>
+
+                          {playingPreview && (
+                            <button
+                              type="button"
+                              onClick={handleStopPreview}
+                              className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-700 transition flex items-center gap-1 cursor-pointer"
+                            >
+                              <VolumeX className="w-3.5 h-3.5" />
+                              <span>إيقاف الكل</span>
+                            </button>
+                          )}
+                        </div>
+
+                        <p className="text-[10px] text-slate-500 bg-white/70 p-2 rounded-lg border border-slate-200/60">
+                          💡 تنبيه: الرسالة الصوتية تعمل للزوار في الخلفية تماماً دون إظهار أي مشغل أو تشويش على واجهة المستخدم، وتبقى محفوظة ونشطة دائماً.
+                        </p>
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                          مستوى الصوت: {Math.round((formMeta.welcomeAudioVolume ?? 0.9) * 100)}%
-                        </label>
-                        <input
-                          type="range"
-                          min="0.1"
-                          max="1.0"
-                          step="0.05"
-                          value={formMeta.welcomeAudioVolume ?? 0.9}
-                          onChange={(e) => setFormMeta({ ...formMeta, welcomeAudioVolume: parseFloat(e.target.value) })}
-                          className="w-full accent-[#19CC5B] cursor-pointer"
-                        />
-                      </div>
-                    </div>
+                    )}
                   </div>
 
                   <button
